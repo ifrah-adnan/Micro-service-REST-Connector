@@ -1,9 +1,7 @@
-package ma.adnan.tp1microservice.entities;
+package ma.adnan.tp1microservice.dto;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,12 +14,8 @@ import java.util.Date;
  * @author Dell Latitude 5420
  * IFRAH ADNAN
  **/
-@Entity
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class BankAccount {
-    @Id
-    private String id;
-    private Date createdAt;
+@Data @AllArgsConstructor @NoArgsConstructor @Builder
+public class BankAccountRequestDto {
     private String currency;
     private Double balance;
     @Enumerated(EnumType.STRING)

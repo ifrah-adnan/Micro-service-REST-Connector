@@ -1,25 +1,29 @@
 package ma.adnan.tp1microservice.web;
 
+import ma.adnan.tp1microservice.dto.BankAccountRequestDto;
+import ma.adnan.tp1microservice.dto.BankAccountResponseDto;
 import ma.adnan.tp1microservice.entities.BankAccount;
 import ma.adnan.tp1microservice.exception.AccountNotFoundException;
 import ma.adnan.tp1microservice.repositories.BankAccountRepository;
+import ma.adnan.tp1microservice.service.AccountServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Dell Latitude 5420
  * IFRAH ADNAN
  **/
 @RestController
+@RequestMapping("/api")
 public class BankAccountController {
     private BankAccountRepository bankAccountRepository;
+    private AccountServiceImpl accountService;
 
-    public BankAccountController(BankAccountRepository bankAccountRepository) {
+    public BankAccountController(BankAccountRepository bankAccountRepository, AccountServiceImpl accountService) {
         this.bankAccountRepository = bankAccountRepository;
+        this.accountService = accountService;
     }
 
     @GetMapping("/account")
@@ -33,14 +37,9 @@ public class BankAccountController {
     }
 
     @PostMapping("/account")
-    public BankAccount createAccount(@RequestBody BankAccount bankAccount) {
-        BankAccount bankAccount1 = BankAccount.builder()
-                .id(UUID.randomUUID().toString())
-                .createdAt(new Date())
-                .type(bankAccount.getType())
-                .balance(bankAccount.getBalance())
-                .build();
-        return bankAccountRepository.save(bankAccount1);
+    public BankAccountResponseDto createAccount(@RequestBody BankAccountRequestDto bankAccount) {
+
+        return accountService.addAccount(bankAccount);
     }
 
     @PutMapping("/account/{id}")
@@ -48,8 +47,8 @@ public class BankAccountController {
         BankAccount bankAccount1 = bankAccountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException("Account not found for this id" + id));
 
 
-        bankAccount1.setBalance(bankAccount.getBalance());
-        bankAccount1.setType(bankAccount.getType());
+        if(bankAccount.getBalance()!=null) bankAccount1.setBalance(bankAccount.getBalance());
+        if(bankAccount.getType()!=null)bankAccount1.setType(bankAccount.getType());
         return bankAccountRepository.save(bankAccount1);
     }
 
