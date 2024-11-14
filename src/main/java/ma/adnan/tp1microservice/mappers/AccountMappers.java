@@ -24,4 +24,8 @@ return  bankAccountResponseDto;
       BankAccount bankAccount=BankAccount.builder().id(UUID.randomUUID().toString()).createdAt(new Date()).balance(bankAccountRequestDto.getBalance()).currency(bankAccountRequestDto.getCurrency()).type(bankAccountRequestDto.getType()).build();
         return  bankAccount;
     }
+    public BankAccount fromBankAccountResponseDto(BankAccountResponseDto bankAccountResponseDto){
+        BankAccount bankAccount= BankAccount.builder().id(bankAccountResponseDto.getId()).type(bankAccountResponseDto.getType()).currency(bankAccountResponseDto.getCurrency()).balance(bankAccountResponseDto.getBalance()).createdAt(bankAccountResponseDto.getCreatedAt()).build();
+        return  bankAccount;
+    }
 }
